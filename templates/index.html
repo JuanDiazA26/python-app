@@ -4,70 +4,297 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Divisas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
     <style>
+        :root {
+            --font-family-base: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --brand-primary: #3b82f6;
+            --brand-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
         body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            font-family: var(--font-family-base);
+            background: var(--brand-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #1e293b;
         }
+
+        .glass-navbar {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+            color: #ffffff !important;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .brand-logo-icon {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+            color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8) !important;
+            padding: 0.5rem 0.9rem !important;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         .converter-card {
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
+            width: 100%;
+            max-width: 440px;
         }
+
+        .card-header-custom {
+            text-align: center;
+            margin-bottom: 1.75rem;
+        }
+
+        .card-header-custom h2 {
+            font-weight: 800;
+            font-size: 1.55rem;
+            letter-spacing: -0.03em;
+            color: #0f172a;
+            margin-bottom: 0.35rem;
+        }
+
+        .card-header-custom p {
+            color: #64748b;
+            font-size: 0.88rem;
+            margin: 0;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #334155;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .form-control, .form-select {
+            font-weight: 500;
+            font-size: 0.98rem;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            padding: 0.7rem 0.9rem;
+            color: #0f172a;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+
+        .exchange-divider {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            margin: 0 auto;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-convert {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            padding: 0.85rem;
+            font-size: 1rem;
+            letter-spacing: 0.01em;
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.3);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn-convert:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(30, 60, 114, 0.4);
+            background: linear-gradient(135deg, #17305b, #21437d);
+        }
+
+        .btn-convert:active {
+            transform: translateY(0);
+        }
+
+        .result-container {
+            background-color: #f0fdf4;
+            border: 1.5px solid #bbf7d0;
+            border-radius: 14px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #15803d;
+            margin-bottom: 0.2rem;
+        }
+
         .result-box {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #198754;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #166534;
+            letter-spacing: -0.02em;
         }
     </style>
 </head>
 
-<body class="d-flex justify-content-center align-items-center vh-100">
+<body>
 
-    <div class="card shadow-lg p-4 converter-card" style="width: 400px;">
-        <h2 class="text-center mb-4">💱 Conversor de Divisas</h2>
+    <nav class="navbar navbar-expand-lg glass-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="brand-logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 16V4m0 0L3 8m4-4l4 4"/>
+                        <path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                    </svg>
+                </span>
+                <span>FX<span class="text-primary-emphasis" style="color: #60a5fa !important;">Convert</span></span>
+            </a>
 
-        <form method="post">
-            <div class="mb-3">
-                <label class="form-label">Cantidad</label>
-                <input type="number" step="0.01" name="amount" 
-                       class="form-control form-control-lg" 
-                       placeholder="Introduce cantidad" required>
+            <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Menu">
+                <i class="bi bi-list fs-2 text-white"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-house-door me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-graph-up-arrow me-1"></i> Tipos de Cambio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-clock-history me-1"></i> Histórico</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <span class="badge bg-light text-dark px-3 py-2 rounded-pill fw-semibold">
+                            <i class="bi bi-broadcast text-success me-1"></i> Tasas en vivo
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center p-3">
+        <div class="card p-4 p-md-5 converter-card">
+            
+            <div class="card-header-custom">
+                <h2>Conversión Instantánea</h2>
+                <p>Calcula el valor en tiempo real entre monedas globales</p>
             </div>
 
-            <div class="row mb-3">
-                <div class="col">
-                    <select name="from_currency" class="form-select">
-                        <option value="EUR">EUR €</option>
-                        <option value="USD">USD $</option>
-                        <option value="GBP">GBP £</option>
-                    </select>
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label" for="amountInput">Importe a convertir</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted" style="border-radius: 12px 0 0 12px;">
+                            <i class="bi bi-cash"></i>
+                        </span>
+                        <input type="number" step="0.01" name="amount" id="amountInput"
+                               class="form-control form-control-lg border-start-0 ps-1" 
+                               placeholder="0.00" required>
+                    </div>
                 </div>
-                <div class="col text-center align-self-center">
-                    →
+
+                <div class="row align-items-center g-2 mb-4">
+                    <div class="col">
+                        <label class="form-label">De</label>
+                        <select name="from_currency" class="form-select">
+                            <option value="EUR">EUR (€)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-auto text-center pt-4">
+                        <div class="exchange-divider" title="Hacia">
+                            <i class="bi bi-arrow-left-right"></i>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <label class="form-label">A</label>
+                        <select name="to_currency" class="form-select">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col">
-                    <select name="to_currency" class="form-select">
-                        <option value="USD">USD $</option>
-                        <option value="EUR">EUR €</option>
-                        <option value="GBP">GBP £</option>
-                    </select>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-convert text-white">
+                        <i class="bi bi-arrow-repeat me-1"></i> Convertir Divisas
+                    </button>
                 </div>
-            </div>
+            </form>
 
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg">
-                    Convertir
-                </button>
-            </div>
-        </form>
+            {% if result is not none %}
+                <div class="result-container">
+                    <div class="result-label">Resultado de la conversión</div>
+                    <div class="result-box">
+                        {{ result }}
+                    </div>
+                </div>
+            {% endif %}
 
-        {% if result is not none %}
-            <div class="mt-4 text-center result-box">
-                {{ result }}
-            </div>
-        {% endif %}
-    </div>
+        </div>
+    </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
